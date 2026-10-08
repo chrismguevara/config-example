@@ -6,6 +6,7 @@
 # Node
 node_modules/
 frontend/dist/
+frontend/tsconfig.tsbuildinfo
 *.local
 
 # Liquibase local artifacts

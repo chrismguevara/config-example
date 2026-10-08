@@ -1,0 +1,28 @@
+{
+  "alice": {
+    "schemaVersion": 4,
+    "theme": "system",
+    "featureFlags": ["newDashboard"],
+    "map": { "baseLayer": "satellite", "layers": ["traffic", "hydrology", "labels", "cadastral"] },
+    "filterPresets": [
+      { "id": "open-items", "name": "Open items", "filters": { "status": ["open"], "assignee": "anyone" } },
+      { "id": "assigned-to-me", "name": "Assigned to me", "filters": { "status": ["open", "pending"], "assignee": "me" } }
+    ]
+  },
+  "bob": {
+    "schemaVersion": 4,
+    "theme": "system",
+    "featureFlags": [],
+    "map": { "baseLayer": "streets", "layers": ["zoning", "hydrology"] },
+    "filterPresets": [
+      { "id": "unassigned", "name": "Unassigned", "filters": { "status": ["open"], "assignee": "unassigned" } }
+    ]
+  },
+  "carol": {
+    "schemaVersion": 4,
+    "theme": "system",
+    "featureFlags": [],
+    "map": { "baseLayer": "streets", "layers": ["hydrology", "labels"] },
+    "filterPresets": []
+  }
+}

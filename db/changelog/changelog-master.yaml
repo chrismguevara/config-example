@@ -1,0 +1,26 @@
+# Liquibase master changelog for the user settings store.
+#
+# One formatted-SQL file per settings schema version. Each data migration:
+#   1. checks (precondition) that every row is at version N-1,
+#   2. rewrites the JSONB document of every row to version N,
+#   3. swaps the coarse CHECK constraints to the version N shape,
+#   4. ships a --rollback that reverses what can be reversed.
+#
+# The dev seed inserts v1 rows *before* 0002..0004 run, so after
+# `liquibase update --contexts=dev` you can inspect migrated documents.
+databaseChangeLog:
+  - include:
+      file: 0001-create-user-settings.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 0001b-dev-seed-v1.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 0002-v2-theme-betaexport-hydrology.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 0003-v3-drop-showlabels-remove-legacyreports-rename-parcels.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 0004-v4-filter-presets-objects.sql
+      relativeToChangelogFile: true

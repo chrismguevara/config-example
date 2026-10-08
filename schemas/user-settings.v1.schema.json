@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://config-example.local/schemas/user-settings.v1.schema.json",
+  "title": "UserSettingsV1",
+  "description": "Per-user settings document, version 1 (initial shape).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "featureFlags", "map", "filterPresets"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "featureFlags": {
+      "description": "Enabled feature flags. A flag that is absent is off.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/FeatureFlag" }
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseLayer", "layers", "showLabels"],
+      "properties": {
+        "baseLayer": { "$ref": "#/$defs/BaseLayer" },
+        "layers": {
+          "description": "Visible overlay layers.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/MapLayer" }
+        },
+        "showLabels": { "type": "boolean" }
+      }
+    },
+    "filterPresets": {
+      "description": "Ids of the built-in filter presets pinned by the user.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/FilterPresetId" }
+    }
+  },
+  "$defs": {
+    "FeatureFlag": {
+      "title": "FeatureFlag",
+      "type": "string",
+      "enum": ["newDashboard", "legacyReports"]
+    },
+    "BaseLayer": {
+      "title": "BaseLayer",
+      "type": "string",
+      "enum": ["streets", "satellite"]
+    },
+    "MapLayer": {
+      "title": "MapLayer",
+      "type": "string",
+      "enum": ["traffic", "parcels", "zoning"]
+    },
+    "FilterPresetId": {
+      "title": "FilterPresetId",
+      "type": "string",
+      "enum": ["open-items", "assigned-to-me", "unassigned"]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://config-example.local/schemas/user-settings.v3.schema.json",
+  "title": "UserSettingsV3",
+  "description": "Version 3. Changes from v2: removes field `map.showLabels` (folded into the new `labels` map layer); removes feature flag `legacyReports` (dropped from existing rows); renames map layer `parcels` to `cadastral` (rewritten in existing rows).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "theme", "featureFlags", "map", "filterPresets"],
+  "properties": {
+    "schemaVersion": { "const": 3 },
+    "theme": { "$ref": "#/$defs/Theme", "default": "system" },
+    "featureFlags": {
+      "description": "Enabled feature flags. A flag that is absent is off.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/FeatureFlag" }
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseLayer", "layers"],
+      "properties": {
+        "baseLayer": { "$ref": "#/$defs/BaseLayer" },
+        "layers": {
+          "description": "Visible overlay layers.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/MapLayer" }
+        }
+      }
+    },
+    "filterPresets": {
+      "description": "Ids of the built-in filter presets pinned by the user.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/FilterPresetId" }
+    }
+  },
+  "$defs": {
+    "Theme": {
+      "title": "Theme",
+      "type": "string",
+      "enum": ["light", "dark", "system"]
+    },
+    "FeatureFlag": {
+      "title": "FeatureFlag",
+      "type": "string",
+      "enum": ["newDashboard", "betaExport"]
+    },
+    "BaseLayer": {
+      "title": "BaseLayer",
+      "type": "string",
+      "enum": ["streets", "satellite"]
+    },
+    "MapLayer": {
+      "title": "MapLayer",
+      "type": "string",
+      "enum": ["traffic", "cadastral", "zoning", "hydrology", "labels"]
+    },
+    "FilterPresetId": {
+      "title": "FilterPresetId",
+      "type": "string",
+      "enum": ["open-items", "assigned-to-me", "unassigned"]
+    }
+  }
+}

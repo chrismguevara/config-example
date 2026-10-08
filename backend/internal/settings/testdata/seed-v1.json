@@ -1,0 +1,20 @@
+{
+  "alice": {
+    "schemaVersion": 1,
+    "featureFlags": ["newDashboard", "legacyReports"],
+    "map": { "baseLayer": "satellite", "layers": ["traffic", "parcels"], "showLabels": true },
+    "filterPresets": ["open-items", "assigned-to-me"]
+  },
+  "bob": {
+    "schemaVersion": 1,
+    "featureFlags": [],
+    "map": { "baseLayer": "streets", "layers": ["zoning"], "showLabels": false },
+    "filterPresets": ["unassigned"]
+  },
+  "carol": {
+    "schemaVersion": 1,
+    "featureFlags": ["legacyReports"],
+    "map": { "baseLayer": "streets", "layers": [], "showLabels": true },
+    "filterPresets": []
+  }
+}

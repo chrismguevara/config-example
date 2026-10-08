@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://config-example.local/schemas/user-settings.v4.schema.json",
+  "title": "UserSettings",
+  "description": "Version 4 (current). Changes from v3: `filterPresets` becomes an array of user-defined preset objects instead of an array of built-in preset ids. Existing ids are expanded into their object form.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "theme", "featureFlags", "map", "filterPresets"],
+  "properties": {
+    "schemaVersion": { "const": 4 },
+    "theme": { "$ref": "#/$defs/Theme", "default": "system" },
+    "featureFlags": {
+      "description": "Enabled feature flags. A flag that is absent is off.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/FeatureFlag" }
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseLayer", "layers"],
+      "properties": {
+        "baseLayer": { "$ref": "#/$defs/BaseLayer" },
+        "layers": {
+          "description": "Visible overlay layers.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/MapLayer" }
+        }
+      }
+    },
+    "filterPresets": {
+      "description": "User-defined filter presets. `id` is unique within the document.",
+      "type": "array",
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/FilterPreset" }
+    }
+  },
+  "$defs": {
+    "Theme": {
+      "title": "Theme",
+      "type": "string",
+      "enum": ["light", "dark", "system"]
+    },
+    "FeatureFlag": {
+      "title": "FeatureFlag",
+      "type": "string",
+      "enum": ["newDashboard", "betaExport"]
+    },
+    "BaseLayer": {
+      "title": "BaseLayer",
+      "type": "string",
+      "enum": ["streets", "satellite"]
+    },
+    "MapLayer": {
+      "title": "MapLayer",
+      "type": "string",
+      "enum": ["traffic", "cadastral", "zoning", "hydrology", "labels"]
+    },
+    "ItemStatus": {
+      "title": "ItemStatus",
+      "type": "string",
+      "enum": ["open", "pending", "closed"]
+    },
+    "AssigneeFilter": {
+      "title": "AssigneeFilter",
+      "type": "string",
+      "enum": ["me", "unassigned", "anyone"]
+    },
+    "FilterPreset": {
+      "title": "FilterPreset",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "filters"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "filters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "assignee"],
+          "properties": {
+            "status": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/ItemStatus" }
+            },
+            "assignee": { "$ref": "#/$defs/AssigneeFilter" }
+          }
+        }
+      }
+    }
+  }
+}
